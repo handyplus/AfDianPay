@@ -1,9 +1,9 @@
 name: AfDianPay
 main: cn.handyplus.afdian.pay.AfDianPay
-version: 1.0.8
+version: 1.0.9
 author: handy
 api-version: 1.13
-website: https://ricedoc.handyplus.cn/wiki/AfDianPay/log/
+website: https://ricedoc.handyplus.cn/wiki/AfDianPay/log
 softdepend: [ PlaceholderAPI,Vault,PlayerPoints ]
 description: 爱发电支付
 folia-supported: true

@@ -5,9 +5,9 @@ import cn.handyplus.afdian.pay.hook.PlaceholderUtil;
 import cn.handyplus.afdian.pay.job.QueryOrderJob;
 import cn.handyplus.afdian.pay.util.ConfigUtil;
 import cn.handyplus.lib.InitApi;
-import cn.handyplus.lib.util.MessageUtil;
 import cn.handyplus.lib.constants.BaseConstants;
 import cn.handyplus.lib.util.BaseUtil;
+import cn.handyplus.lib.util.MessageUtil;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -43,7 +43,7 @@ public class AfDianPay extends JavaPlugin {
                 .checkVersion(ConfigUtil.CONFIG.getBoolean(BaseConstants.IS_CHECK_UPDATE), AfDianPayConstants.PLUGIN_VERSION_URL);
 
         MessageUtil.sendConsoleMessage("§a已成功载入服务器！");
-        MessageUtil.sendConsoleMessage("§aAuthor:handy QQ群:1064982471");
+        MessageUtil.sendConsoleMessage("§aAuthor:handy 使用文档: https://ricedoc.handyplus.cn/wiki/AfDianPay/README");
 
         // 初始化定时任务
         QueryOrderJob.init();
@@ -51,8 +51,7 @@ public class AfDianPay extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        MessageUtil.sendConsoleMessage("§a已成功卸载！");
-        MessageUtil.sendConsoleMessage("§aAuthor:handy QQ群:1064982471");
+        InitApi.disable();
     }
 
     public static AfDianPay getInstance() {
