@@ -1,6 +1,5 @@
 package cn.handyplus.afdian.pay;
 
-import cn.handyplus.afdian.pay.constants.AfDianPayConstants;
 import cn.handyplus.afdian.pay.hook.PlaceholderUtil;
 import cn.handyplus.afdian.pay.job.QueryOrderJob;
 import cn.handyplus.afdian.pay.util.ConfigUtil;
@@ -10,6 +9,7 @@ import cn.handyplus.lib.util.BaseUtil;
 import cn.handyplus.lib.util.MessageUtil;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,8 +19,8 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author handy
  */
 public class AfDianPay extends JavaPlugin {
-    private static AfDianPay INSTANCE;
-    private static PlayerPoints PLAYER_POINTS = null;
+    public static AfDianPay INSTANCE;
+    public static PlayerPoints PLAYER_POINTS;
     public static boolean USE_PAPI;
 
     @Override
@@ -40,26 +40,18 @@ public class AfDianPay extends JavaPlugin {
                 .initListener("cn.handyplus.afdian.pay.listener")
                 .enableSql("cn.handyplus.afdian.pay.entity")
                 .addMetrics(17625)
-                .checkVersion(ConfigUtil.CONFIG.getBoolean(BaseConstants.IS_CHECK_UPDATE), AfDianPayConstants.PLUGIN_VERSION_URL);
-
-        MessageUtil.sendConsoleMessage("§a已成功载入服务器！");
-        MessageUtil.sendConsoleMessage("§aAuthor:handy 使用文档: https://ricedoc.handyplus.cn/wiki/AfDianPay/README");
+                .checkVersion(ConfigUtil.CONFIG.getBoolean(BaseConstants.IS_CHECK_UPDATE));
 
         // 初始化定时任务
         QueryOrderJob.init();
+
+        MessageUtil.sendConsoleMessage(ChatColor.GREEN + "已成功载入服务器!");
+        MessageUtil.sendConsoleMessage(ChatColor.GREEN + "Author:handy WIKI: https://ricedoc.handyplus.cn/wiki/AfDianPay/README");
     }
 
     @Override
     public void onDisable() {
         InitApi.disable();
-    }
-
-    public static AfDianPay getInstance() {
-        return INSTANCE;
-    }
-
-    public static PlayerPoints getPlayerPoints() {
-        return PLAYER_POINTS;
     }
 
     /**

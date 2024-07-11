@@ -8,10 +8,6 @@ package cn.handyplus.afdian.pay.constants;
 public class AfDianPayConstants {
 
     /**
-     * 检查更新的版本url
-     */
-    public final static String PLUGIN_VERSION_URL = "https://api.github.com/repos/handy-git/AfDianPay/releases/latest";
-    /**
      * user_id
      */
     public static String AFDIAN_USER_ID;

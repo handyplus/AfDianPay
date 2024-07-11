@@ -1,6 +1,5 @@
 package cn.handyplus.afdian.pay.listener;
 
-import cn.handyplus.afdian.pay.constants.AfDianPayConstants;
 import cn.handyplus.afdian.pay.util.ConfigUtil;
 import cn.handyplus.lib.annotation.HandyListener;
 import cn.handyplus.lib.constants.BaseConstants;
@@ -28,7 +27,7 @@ public class PlayerJoinEventListener implements Listener {
         if (!ConfigUtil.CONFIG.getBoolean(BaseConstants.IS_CHECK_UPDATE_TO_OP_MSG)) {
             return;
         }
-        HandyHttpUtil.checkVersion(event.getPlayer(), AfDianPayConstants.PLUGIN_VERSION_URL);
+        HandyHttpUtil.checkVersion(event.getPlayer());
     }
 
 }
