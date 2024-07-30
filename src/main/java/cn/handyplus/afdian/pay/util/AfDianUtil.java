@@ -30,9 +30,9 @@ public class AfDianUtil {
      */
     public static void init() {
         String afDianUrl = ConfigUtil.CONFIG.getString("afDianUrl", "afdian.net");
-        PING_URL = PING_URL.replaceFirst("afdian.net", afDianUrl);
-        QUERY_ORDER_URL = QUERY_ORDER_URL.replaceFirst("afdian.net", afDianUrl);
-        QUERY_SPONSOR_URL = QUERY_SPONSOR_URL.replaceFirst("afdian.net", afDianUrl);
+        PING_URL = PING_URL.replace("afdian.net", afDianUrl);
+        QUERY_ORDER_URL = QUERY_ORDER_URL.replace("afdian.net", afDianUrl);
+        QUERY_SPONSOR_URL = QUERY_SPONSOR_URL.replace("afdian.net", afDianUrl);
     }
 
     /**

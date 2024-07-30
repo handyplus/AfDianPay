@@ -43,11 +43,11 @@ public class AfDianPay extends JavaPlugin {
                 .addMetrics(17625)
                 .checkVersion(ConfigUtil.CONFIG.getBoolean(BaseConstants.IS_CHECK_UPDATE));
 
-        // 初始化定时任务
-        QueryOrderJob.init();
-
         // 初始化域名
         AfDianUtil.init();
+
+        // 初始化定时任务
+        QueryOrderJob.init();
 
         MessageUtil.sendConsoleMessage(ChatColor.GREEN + "已成功载入服务器!");
         MessageUtil.sendConsoleMessage(ChatColor.GREEN + "Author:handy WIKI: https://ricedoc.handyplus.cn/wiki/AfDianPay/README");
