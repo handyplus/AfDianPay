@@ -73,6 +73,19 @@ public class AfDianOrderService {
     }
 
     /**
+     * 根据id设置已完成
+     *
+     * @param id id
+     * @return 成功
+     * @since 1.1.3
+     */
+    public boolean updateDone(Integer id) {
+        Db<AfDianOrder> db = Db.use(AfDianOrder.class);
+        db.update().set(AfDianOrder::getResult, true);
+        return db.execution().updateById(id) > 0;
+    }
+
+    /**
      * 查询全部
      *
      * @return list

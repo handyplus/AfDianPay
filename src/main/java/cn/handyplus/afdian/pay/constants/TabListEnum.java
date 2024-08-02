@@ -22,10 +22,14 @@ public enum TabListEnum {
     /**
      * 第一层提醒
      */
-    FIRST(Arrays.asList("convert", "reload", "reward", "send", "look", "getIp"), 0, null, 1),
+    FIRST(Arrays.asList("convert", "reload", "reward", "send", "look", "getIp", "done"), 0, null, 1),
 
     REWARD_TWO(Collections.singletonList(BaseUtil.getMsgNotColor("tabHelp.orderNumber")), 1, "reward", 2),
     LOOK_TWO(Collections.singletonList(BaseUtil.getMsgNotColor("tabHelp.orderNumber")), 1, "look", 2),
+    DONE_TWO(Collections.singletonList(BaseUtil.getMsgNotColor("tabHelp.orderNumber")), 1, "done", 2),
+
+    SEND_TWO(new ArrayList<>(), 1, "send", 2),
+
     CONVERT_ONE(DbTypeEnum.getEnum(), 1, "convert", 2),
     ;
     /**
@@ -54,18 +58,24 @@ public enum TabListEnum {
      */
     public static List<String> returnList(String[] args, int argsLength) {
         List<String> completions = new ArrayList<>();
-        // tab商品名特殊处理
-        if (argsLength == 2 && "send".equalsIgnoreCase(args[0])) {
-            return new ArrayList<>(ConfigUtil.SHOP_CONFIG.getKeys(false));
-        }
         for (TabListEnum tabListEnum : TabListEnum.values()) {
+            // 过滤掉参数长度不满足要求的情况
             if (tabListEnum.getBefPos() - 1 >= args.length) {
                 continue;
             }
-            if ((tabListEnum.getBef() == null || tabListEnum.getBef().equalsIgnoreCase(args[tabListEnum.getBefPos() - 1]))
-                    && tabListEnum.getNum() == argsLength) {
-                completions = tabListEnum.getList();
+            // 过滤掉前置参数不匹配的情况
+            if (tabListEnum.getBef() != null && !tabListEnum.getBef().equalsIgnoreCase(args[tabListEnum.getBefPos() - 1])) {
+                continue;
             }
+            // 过滤掉参数长度不匹配的情况
+            if (tabListEnum.getNum() != argsLength) {
+                continue;
+            }
+            // 商品名称输出
+            if (tabListEnum.equals(SEND_TWO)) {
+                return new ArrayList<>(ConfigUtil.SHOP_CONFIG.getKeys(false));
+            }
+            return tabListEnum.getList();
         }
         return completions;
     }
