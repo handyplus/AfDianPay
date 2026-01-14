@@ -2,7 +2,7 @@ package cn.handyplus.afdian.pay.util;
 
 import cn.handyplus.afdian.pay.entity.AfDianOrder;
 import cn.handyplus.afdian.pay.event.BuyShopGiveOutRewardsEvent;
-import cn.handyplus.lib.expand.adapter.HandySchedulerUtil;
+import cn.handyplus.lib.internal.HandySchedulerUtil;
 import org.bukkit.Bukkit;
 
 import java.util.List;

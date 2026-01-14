@@ -1,8 +1,6 @@
 package cn.handyplus.afdian.pay.listener;
 
-import cn.handyplus.afdian.pay.util.ConfigUtil;
 import cn.handyplus.lib.annotation.HandyListener;
-import cn.handyplus.lib.constants.BaseConstants;
 import cn.handyplus.lib.util.HandyHttpUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
