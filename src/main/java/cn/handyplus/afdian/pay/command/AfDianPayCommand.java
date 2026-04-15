@@ -33,7 +33,7 @@ public class AfDianPayCommand implements TabExecutor {
             sendHelp(sender);
             return true;
         }
-        boolean rst = HandyCommandWrapper.onCommand(sender, cmd, label, args, BaseUtil.getMsgNotColor("noPermission"));
+        boolean rst = HandyCommandWrapper.onCommand(sender, cmd, label, args, BaseUtil.getLangMsg("noPermission"));
         if (!rst) {
             sendHelp(sender);
         }

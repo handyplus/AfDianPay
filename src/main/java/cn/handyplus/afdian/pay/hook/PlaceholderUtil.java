@@ -6,6 +6,7 @@ import cn.handyplus.afdian.pay.service.AfDianOrderService;
 import cn.handyplus.lib.util.BaseUtil;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
+import org.jspecify.annotations.NonNull;
 
 /**
  * 变量扩展
@@ -25,7 +26,7 @@ public class PlaceholderUtil extends PlaceholderExpansion {
      * @return 结果
      */
     @Override
-    public String getIdentifier() {
+    public @NonNull String getIdentifier() {
         return "afDianPay";
     }
 
@@ -37,14 +38,14 @@ public class PlaceholderUtil extends PlaceholderExpansion {
      * @return 结果
      */
     @Override
-    public String onRequest(OfflinePlayer player, String identifier) {
+    public String onRequest(OfflinePlayer player, @NonNull String identifier) {
         if (player == null) {
             return null;
         }
         // %afDianPay_exist%
         if ("exist".equals(identifier)) {
             Integer count = AfDianOrderService.getInstance().findByPlayerName(player.getName());
-            return plugin.getConfig().getString(identifier, BaseUtil.getMsgNotColor(count > 0 ? "exist" : "notExist"));
+            return plugin.getConfig().getString(identifier, BaseUtil.getLangMsg(count > 0 ? "exist" : "notExist"));
         }
         // %afDianPay_number%
         if ("number".equals(identifier)) {
@@ -86,7 +87,7 @@ public class PlaceholderUtil extends PlaceholderExpansion {
      * @return 结果
      */
     @Override
-    public String getAuthor() {
+    public @NonNull String getAuthor() {
         return plugin.getDescription().getAuthors().toString();
     }
 
@@ -96,7 +97,7 @@ public class PlaceholderUtil extends PlaceholderExpansion {
      * @return 结果
      */
     @Override
-    public String getVersion() {
+    public @NonNull String getVersion() {
         return plugin.getDescription().getVersion();
     }
 }

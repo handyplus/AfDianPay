@@ -35,7 +35,7 @@ public class ReloadCommand implements IHandyCommandEvent {
         ConfigUtil.init();
         // 判断是否激活爱发电
         AfDianUtil.pingResult();
-        MessageUtil.sendMessage(sender, BaseUtil.getMsgNotColor("reloadMsg"));
+        MessageUtil.sendMessage(sender, BaseUtil.getLangMsg("reloadMsg"));
     }
 
 }

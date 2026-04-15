@@ -24,9 +24,9 @@ public enum TabListEnum {
      */
     FIRST(Arrays.asList("convert", "reload", "reward", "send", "look", "done"), 0, null, 1),
 
-    REWARD_TWO(Collections.singletonList(BaseUtil.getMsgNotColor("tabHelp.orderNumber")), 1, "reward", 2),
-    LOOK_TWO(Collections.singletonList(BaseUtil.getMsgNotColor("tabHelp.orderNumber")), 1, "look", 2),
-    DONE_TWO(Collections.singletonList(BaseUtil.getMsgNotColor("tabHelp.orderNumber")), 1, "done", 2),
+    REWARD_TWO(Collections.singletonList(BaseUtil.getLangMsg("tabHelp.orderNumber")), 1, "reward", 2),
+    LOOK_TWO(Collections.singletonList(BaseUtil.getLangMsg("tabHelp.orderNumber")), 1, "look", 2),
+    DONE_TWO(Collections.singletonList(BaseUtil.getLangMsg("tabHelp.orderNumber")), 1, "done", 2),
 
     SEND_TWO(new ArrayList<>(), 1, "send", 2),
 

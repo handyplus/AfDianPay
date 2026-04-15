@@ -120,12 +120,12 @@ public class QueryOrderJob {
                 // 异常订单数据处理
                 if (StrUtil.isEmpty(afDianOrder.getPlayerName())) {
                     afDianOrder.setResult(true);
-                    afDianOrder.setErrorMsg(BaseUtil.getMsgNotColor("notPlayerName"));
+                    afDianOrder.setErrorMsg(BaseUtil.getLangMsg("notPlayerName"));
                 }
                 // 异常商品名称处理
                 if (StrUtil.isEmpty(afDianOrder.getShopName())) {
                     afDianOrder.setResult(true);
-                    afDianOrder.setErrorMsg(BaseUtil.getMsgNotColor("notShopName"));
+                    afDianOrder.setErrorMsg(BaseUtil.getLangMsg("notShopName"));
                 }
                 afDianOrderList.add(afDianOrder);
             }

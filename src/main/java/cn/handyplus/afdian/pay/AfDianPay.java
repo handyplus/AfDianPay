@@ -6,7 +6,6 @@ import cn.handyplus.afdian.pay.util.AfDianUtil;
 import cn.handyplus.afdian.pay.util.ConfigUtil;
 import cn.handyplus.lib.InitApi;
 import cn.handyplus.lib.constants.HookPluginEnum;
-import cn.handyplus.lib.util.BaseUtil;
 import cn.handyplus.lib.util.HookPluginUtil;
 import cn.handyplus.lib.util.MessageUtil;
 import org.black_ixx.playerpoints.PlayerPoints;

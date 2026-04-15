@@ -12,6 +12,7 @@ import cn.handyplus.lib.core.StrUtil;
 import cn.handyplus.lib.util.BaseUtil;
 import cn.handyplus.lib.util.HandyConfigUtil;
 import cn.handyplus.lib.util.MessageUtil;
+import cn.handyplus.lib.util.RgbTextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,7 +49,7 @@ public class BuyShopGiveOutRewardsEventListener implements Listener {
         Optional<AfDianOrder> afDianOrderOptional = AfDianOrderService.getInstance().findById(id);
         // 是否为空
         if (!afDianOrderOptional.isPresent()) {
-            MessageUtil.sendConsoleMessage(BaseUtil.getMsgNotColor("notOrder"));
+            MessageUtil.sendConsoleMessage(BaseUtil.getLangMsg("notOrder"));
             return;
         }
         AfDianOrder afDianOrder = afDianOrderOptional.get();
@@ -85,24 +86,24 @@ public class BuyShopGiveOutRewardsEventListener implements Listener {
         }
         // 是否发过奖励
         if (afDianOrder.getResult() && StrUtil.isEmpty(afDianOrder.getErrorMsg())) {
-            MessageUtil.sendConsoleMessage(BaseUtil.getMsgNotColor("notReward").replace("${order}", afDianOrder.getOutTradeNo()));
+            MessageUtil.sendConsoleMessage(BaseUtil.getLangMsg("notReward").replace("${order}", afDianOrder.getOutTradeNo()));
             return null;
         }
         // 玩家是否存在
         Player player = Bukkit.getPlayerExact(afDianOrder.getPlayerName());
         if (player == null) {
-            MessageUtil.sendConsoleMessage(BaseUtil.getMsgNotColor("noPlayer").replace("${player}", afDianOrder.getPlayerName()));
+            MessageUtil.sendConsoleMessage(BaseUtil.getLangMsg("noPlayer").replace("${player}", afDianOrder.getPlayerName()));
             return null;
         }
         // 玩家是否在线
         if (!player.isOnline()) {
-            MessageUtil.sendConsoleMessage(BaseUtil.getMsgNotColor("onlinePlayer").replace("${player}", afDianOrder.getPlayerName()));
+            MessageUtil.sendConsoleMessage(BaseUtil.getLangMsg("onlinePlayer").replace("${player}", afDianOrder.getPlayerName()));
             return null;
         }
         // 是否存在当前商品
         Set<String> keySet = HandyConfigUtil.getKey(ConfigUtil.SHOP_CONFIG, null);
         if (!keySet.contains(afDianOrder.getShopName())) {
-            MessageUtil.sendConsoleMessage(BaseUtil.getMsgNotColor("configNotShopName").replace("${shop}", afDianOrder.getShopName()));
+            MessageUtil.sendConsoleMessage(BaseUtil.getLangMsg("configNotShopName").replace("${shop}", afDianOrder.getShopName()));
             return null;
         }
         return player;
@@ -183,12 +184,12 @@ public class BuyShopGiveOutRewardsEventListener implements Listener {
             }
             if (message.contains("[actionbar]")) {
                 String trimMessage = message.replace("[actionbar]", "").trim();
-                MessageUtil.sendActionbar(player, trimMessage);
+                RgbTextUtil.init(trimMessage).sendActionBar(player);
                 continue;
             }
             if (message.contains("[allActionbar]")) {
                 String trimMessage = message.replace("[allActionbar]", "").trim();
-                MessageUtil.sendAllActionbar(trimMessage);
+                RgbTextUtil.init(trimMessage).sendAllActionBar();
             }
         }
     }
