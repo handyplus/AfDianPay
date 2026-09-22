@@ -10,44 +10,32 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <HandyLib.version>3.43.0</HandyLib.version>
+        <spigot-api.vesion>1.21.11-R0.1-SNAPSHOT</spigot-api.vesion>
+        <annotations.version>26.0.2</annotations.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>cn.handyplus.lib</groupId>
-            <artifactId>HandyLib</artifactId>
-            <version>${HandyLib.version}</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>net.milkbowl.vault</groupId>
-            <artifactId>VaultAPI</artifactId>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${spigot-api.vesion}</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>org.black_ixx</groupId>
-            <artifactId>PlayerPoints</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <scope>provided</scope>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>${annotations.version}</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>cn.handyplus.lib</groupId>
-                <artifactId>HandyBom</artifactId>
-                <version>1.1.8</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    <distributionManagement>
+        <repository>
+            <id>handy-repository</id>
+            <url>https://nexus.handyplus.cn/releases</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <plugins>
@@ -57,46 +45,78 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.15.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>1.18.44</version>
-                        </path>
-                    </annotationProcessorPaths>
+                    <release>8</release>
                     <compilerArgs>
                         <arg>-Xlint:-options</arg>
                         <arg>-Xlint:-removal</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
-            <!--将依赖的jar包打包到当前jar包-->
+            <!-- 源代码插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.2</version>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.4.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Javadoc插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.12.0</version>
                 <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <artifactSet>
-                        <includes>
-                            <include>cn.handyplus.lib:*:*:*</include>
-                        </includes>
-                    </artifactSet>
-                    <relocations>
-                        <relocation>
-                            <pattern>cn.handyplus.lib</pattern>
-                            <shadedPattern>cn.handyplus.afdian.pay.lib</shadedPattern>
-                        </relocation>
-                    </relocations>
+                    <!-- 使用的Java版本 -->
+                    <source>8</source>
+                    <!-- 禁用严格检查 -->
+                    <doclint>none</doclint>
                 </configuration>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <id>attach-javadocs</id>
                         <goals>
-                            <goal>shade</goal>
+                            <goal>jar</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- 发布到额外的 Maven 仓库 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.1.4</version>
+                <executions>
+                    <execution>
+                        <id>deploy-aliyun</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                        <configuration>
+                            <!--阿里云效-->
+                            <altDeploymentRepository>
+                                handy::https://packages.aliyun.com/60bf16902c5969c370c5f508/maven/handy
+                            </altDeploymentRepository>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>deploy-handyplus-maven</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 腾讯CNB -->
+                            <altDeploymentRepository>
+                                handyplus-maven::https://maven.cnb.cool/handyplus/maven/-/packages/
+                            </altDeploymentRepository>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

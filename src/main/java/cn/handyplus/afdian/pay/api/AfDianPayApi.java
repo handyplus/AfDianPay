@@ -1,6 +1,5 @@
 package cn.handyplus.afdian.pay.api;
 
-import cn.handyplus.afdian.pay.service.AfDianOrderService;
 import org.bukkit.entity.Player;
 
 /**
@@ -27,9 +26,7 @@ public class AfDianPayApi {
      * @param playerName 玩家名
      * @since 1.0.1
      */
-    public Integer findPointByPlayerName(String playerName) {
-        return AfDianOrderService.getInstance().findPointByPlayerName(playerName);
-    }
+    public native Integer findPointByPlayerName(String playerName);
 
     /**
      * 查询玩家赞助的点券数量
@@ -37,8 +34,5 @@ public class AfDianPayApi {
      * @param player 玩家
      * @since 1.0.1
      */
-    public Integer findPointByPlayerName(Player player) {
-        return this.findPointByPlayerName(player.getName());
-    }
-
+    public native Integer findPointByPlayerName(Player player);
 }
