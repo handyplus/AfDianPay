@@ -40,6 +40,8 @@ public class ConfigUtil {
         // 1.1.1 可以自己控制域名
         HandyConfigUtil.setPathIsNotContains(CONFIG, "afDianUrl", "afdian.net", null, "config.yml");
         CONFIG = HandyConfigUtil.load("config.yml");
+        // 1.1.8 玩家不存在提醒消息开关
+        HandyConfigUtil.setPathIsNotContains(CONFIG, "noPlayerMsg", true, null, "config.yml");
         HandyConfigUtil.setPathIsNotContains(BaseConstants.LANG_CONFIG, "configNotShopName", "&8[&c✘&8] &7OP没有配置 &a${shop} &7这个商品名称", null, "languages/" + CONFIG.getString("language") + ".yml");
         // 1.1.3 新增设置订单完成指令
         HandyConfigUtil.setPathIsNotContains(BaseConstants.LANG_CONFIG, "opDone", "&8[&a✔&8] &7设置订单 &a${order} &7状态为已完成", null, "languages/" + CONFIG.getString("language") + ".yml");

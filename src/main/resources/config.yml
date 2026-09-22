@@ -23,3 +23,6 @@ onlyReward: false
 
 # 拉取订单提醒消息
 jobMsg: true
+
+# 玩家不存在时候是否打印提醒消息
+noPlayerMsg: true

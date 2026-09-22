@@ -92,7 +92,10 @@ public class BuyShopGiveOutRewardsEventListener implements Listener {
         // 玩家是否存在
         Player player = Bukkit.getPlayerExact(afDianOrder.getPlayerName());
         if (player == null) {
-            MessageUtil.sendConsoleMessage(BaseUtil.getLangMsg("noPlayer").replace("${player}", afDianOrder.getPlayerName()));
+            boolean noPlayerMsg = ConfigUtil.CONFIG.getBoolean("noPlayerMsg", true);
+            if (noPlayerMsg) {
+                MessageUtil.sendConsoleMessage(BaseUtil.getLangMsg("noPlayer").replace("${player}", afDianOrder.getPlayerName()));
+            }
             return null;
         }
         // 玩家是否在线
