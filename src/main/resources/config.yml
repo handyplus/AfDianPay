@@ -26,3 +26,6 @@ jobMsg: true
 
 # 玩家不存在时候是否打印提醒消息
 noPlayerMsg: true
+
+# 商品不存在时候是否打印提醒消息
+configNotShopNameMsg: true

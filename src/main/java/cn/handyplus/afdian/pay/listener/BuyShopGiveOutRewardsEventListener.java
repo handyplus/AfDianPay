@@ -106,7 +106,10 @@ public class BuyShopGiveOutRewardsEventListener implements Listener {
         // 是否存在当前商品
         Set<String> keySet = HandyConfigUtil.getKey(ConfigUtil.SHOP_CONFIG, null);
         if (!keySet.contains(afDianOrder.getShopName())) {
-            MessageUtil.sendConsoleMessage(BaseUtil.getLangMsg("configNotShopName").replace("${shop}", afDianOrder.getShopName()));
+            boolean configNotShopNameMsg = ConfigUtil.CONFIG.getBoolean("configNotShopNameMsg", true);
+            if (configNotShopNameMsg) {
+                MessageUtil.sendConsoleMessage(BaseUtil.getLangMsg("configNotShopName").replace("${shop}", afDianOrder.getShopName()));
+            }
             return null;
         }
         return player;
