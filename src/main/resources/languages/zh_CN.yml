@@ -30,6 +30,7 @@ paramFailureMsg: "&c参数错误."
 noPlayerFailureMsg: "&c该命令只能玩家执行."
 
 noToken: "&8[&c✘&8] &7config.yml中爱发电配置错误,插件未工作"
+afDianUnavailable: "&8[&e!&8] &7爱发电接口暂不可用或配置有误，本地功能不受影响，将在下次拉单时重试"
 noPlayer: "&8[&c✘&8] &7服务器内没有名称为 ${player} 的玩家"
 onlinePlayer: "&8[&c✘&8] &7玩家 &a${player} 不在线不发奖励"
 notPlayerName: "&8[&c✘&8] &7订单没有留言玩家名称"

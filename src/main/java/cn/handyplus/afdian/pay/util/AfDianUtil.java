@@ -6,12 +6,12 @@ import cn.handyplus.afdian.pay.param.AfDianRequest;
 import cn.handyplus.afdian.pay.param.AfDianResponse;
 import cn.handyplus.lib.core.HttpUtil;
 import cn.handyplus.lib.core.JsonUtil;
+import cn.handyplus.lib.core.MapUtil;
 import cn.handyplus.lib.core.SecureUtil;
 import cn.handyplus.lib.util.BaseUtil;
 import cn.handyplus.lib.util.MessageUtil;
 import lombok.SneakyThrows;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -39,13 +39,14 @@ public class AfDianUtil {
      * 获取ping结果
      */
     public static void pingResult() {
-        AfDianResponse ping = AfDianUtil.ping();
-        // 判断是否激活爱发电
-        if (!"200".equals(ping.getEc())) {
-            MessageUtil.sendConsoleMessage(BaseUtil.getLangMsg("noToken"));
+        try {
+            AfDianResponse ping = AfDianUtil.ping();
+            AfDianPayConstants.PING_RESULT = ping != null && "200".equals(ping.getEc());
+        } catch (Exception ignored) {
             AfDianPayConstants.PING_RESULT = false;
-        } else {
-            AfDianPayConstants.PING_RESULT = true;
+        }
+        if (!AfDianPayConstants.PING_RESULT) {
+            MessageUtil.sendConsoleMessage(BaseUtil.getLangMsg("afDianUnavailable"));
         }
     }
 
@@ -53,21 +54,9 @@ public class AfDianUtil {
      * ping
      */
     private static AfDianResponse ping() {
-        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = MapUtil.newHashMapWithExpectedSize(1);
         params.put("ping", "123456");
         return JsonUtil.toBean(sendPost(PING_URL, params), AfDianResponse.class);
-    }
-
-    /**
-     * 查订单
-     *
-     * @param outTradeNo 订单号
-     * @return QueryOrderBo 订单信息
-     */
-    public static QueryOrderBo queryOrderByOutTradeNo(String outTradeNo) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("out_trade_no", outTradeNo);
-        return queryOrder(params);
     }
 
     /**
@@ -77,7 +66,7 @@ public class AfDianUtil {
      * @return QueryOrderBo 订单信息
      */
     public static QueryOrderBo queryOrderByPage(Integer page) {
-        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = MapUtil.newHashMapWithExpectedSize(1);
         params.put("page", page);
         return queryOrder(params);
     }
@@ -90,15 +79,6 @@ public class AfDianUtil {
      */
     public static QueryOrderBo queryOrder(Map<String, Object> params) {
         return JsonUtil.toBean(sendPost(QUERY_ORDER_URL, params), QueryOrderBo.class);
-    }
-
-    /**
-     * 查赞助者
-     *
-     * @param params 参数
-     */
-    public static AfDianResponse querySponsor(Map<String, Object> params) {
-        return JsonUtil.toBean(sendPost(QUERY_SPONSOR_URL, params), AfDianResponse.class);
     }
 
     /**

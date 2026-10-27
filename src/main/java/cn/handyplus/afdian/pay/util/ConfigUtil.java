@@ -47,6 +47,8 @@ public class ConfigUtil {
         HandyConfigUtil.setPathIsNotContains(BaseConstants.LANG_CONFIG, "configNotShopName", "&8[&c✘&8] &7OP没有配置 &a${shop} &7这个商品名称", null, "languages/" + CONFIG.getString("language") + ".yml");
         // 1.1.3 新增设置订单完成指令
         HandyConfigUtil.setPathIsNotContains(BaseConstants.LANG_CONFIG, "opDone", "&8[&a✔&8] &7设置订单 &a${order} &7状态为已完成", null, "languages/" + CONFIG.getString("language") + ".yml");
+        // 1.2.0 新增接口不可用提示
+        HandyConfigUtil.setPathIsNotContains(BaseConstants.LANG_CONFIG, "afDianUnavailable", "&8[&e!&8] &7爱发电接口暂不可用或配置有误，本地功能不受影响，将在下次拉单时重试", null, "languages/" + CONFIG.getString("language") + ".yml");
         BaseConstants.LANG_CONFIG = HandyConfigUtil.loadLangConfig(CONFIG.getString("language"), true);
     }
 

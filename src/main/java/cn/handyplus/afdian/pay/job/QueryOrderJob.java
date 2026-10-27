@@ -38,13 +38,7 @@ public class QueryOrderJob {
         // 判断是否激活爱发电
         AfDianUtil.pingResult();
         // 定时任务
-        HandySchedulerUtil.runTaskTimerAsynchronously(() -> {
-            // 判断是否可以ping成功
-            if (!AfDianPayConstants.PING_RESULT) {
-                return;
-            }
-            getOrder();
-        }, 60, 20L * ConfigUtil.CONFIG.getInt("jobTime", 60));
+        HandySchedulerUtil.runTaskTimerAsynchronously(QueryOrderJob::getOrder, 60, 20L * ConfigUtil.CONFIG.getInt("jobTime", 60));
     }
 
     /**
@@ -58,18 +52,7 @@ public class QueryOrderJob {
             long millis = System.currentTimeMillis();
             // 判断是否拉订单
             if (!ConfigUtil.CONFIG.getBoolean("onlyReward", false)) {
-                sendMsg("定时开始获取爱发电数据");
-                // 最大订单
-                String maxOrder = AfDianOrderService.getInstance().findMaxOrder();
-                List<AfDianOrder> afDianOrderList = queryOrder(1, maxOrder);
-                if (CollUtil.isEmpty(afDianOrderList)) {
-                    sendMsg("没有获取到爱发电数据,耗时:" + (System.currentTimeMillis() - millis) / 1000 + "秒");
-                    return;
-                }
-                // 保存
-                sendMsg("开始保存爱发电订单");
-                AfDianOrderService.getInstance().addBatch(afDianOrderList);
-                sendMsg("保存爱发电订单结束");
+                syncOrders();
             }
             // 需发送奖励的列表
             List<AfDianOrder> list = AfDianOrderService.getInstance().list();
@@ -87,16 +70,54 @@ public class QueryOrderJob {
     }
 
     /**
+     * 同步远程订单，接口失败不影响本地奖励发放
+     */
+    private static void syncOrders() {
+        // 仅验证失败时重试，不增加正常情况下的请求次数
+        if (!AfDianPayConstants.PING_RESULT) {
+            AfDianUtil.pingResult();
+        }
+        if (!AfDianPayConstants.PING_RESULT) {
+            return;
+        }
+        long millis = System.currentTimeMillis();
+        sendMsg("定时开始获取爱发电数据");
+        String maxOrder = AfDianOrderService.getInstance().findMaxOrder();
+        List<AfDianOrder> afDianOrderList = new ArrayList<>();
+        boolean success;
+        try {
+            success = queryOrder(1, maxOrder, afDianOrderList);
+        } catch (Exception ignored) {
+            success = false;
+        }
+        if (!success) {
+            MessageUtil.sendConsoleMessage(BaseUtil.getLangMsg("afDianUnavailable"));
+            return;
+        }
+        if (CollUtil.isEmpty(afDianOrderList)) {
+            sendMsg("没有获取到爱发电数据,耗时:" + (System.currentTimeMillis() - millis) / 1000 + "秒");
+            return;
+        }
+        sendMsg("开始保存爱发电订单");
+        AfDianOrderService.getInstance().addBatch(afDianOrderList);
+        sendMsg("保存爱发电订单结束");
+    }
+
+    /**
      * 轮训查询订单
      *
-     * @param page     页数
-     * @param maxOrder 最大订单号
-     * @return 订单信息
+     * @param page      页数
+     * @param maxOrder  最大订单号
+     * @param orderList 订单信息
+     * @return 是否全部查询成功，失败时不保存本轮订单
      */
-    private static List<AfDianOrder> queryOrder(Integer page, String maxOrder) {
+    private static boolean queryOrder(Integer page, String maxOrder, List<AfDianOrder> orderList) {
         List<AfDianOrder> afDianOrderList = new ArrayList<>();
         // 查询订单
         QueryOrderBo queryOrderBo = AfDianUtil.queryOrderByPage(page);
+        if (queryOrderBo == null || !Integer.valueOf(200).equals(queryOrderBo.getEc()) || queryOrderBo.getData() == null) {
+            return false;
+        }
         QueryOrderData queryOrderBoData = queryOrderBo.getData();
         int totalPage = queryOrderBoData.getTotal_page();
         List<QueryOrderDataList> queryOrderDataList = queryOrderBoData.getList();
@@ -131,12 +152,13 @@ public class QueryOrderJob {
             }
             sendMsg("获取爱发电数据: 页数" + page + ",条数:" + afDianOrderList.size());
         }
+        orderList.addAll(afDianOrderList);
         // 判断当页记录是否存在了
         List<String> outTradeNoList = afDianOrderList.stream().map(AfDianOrder::getOutTradeNo).collect(Collectors.toList());
         if (page < totalPage && !outTradeNoList.contains(maxOrder)) {
-            afDianOrderList.addAll(queryOrder(++page, maxOrder));
+            return queryOrder(++page, maxOrder, orderList);
         }
-        return afDianOrderList;
+        return true;
     }
 
     /**
